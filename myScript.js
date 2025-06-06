@@ -25,12 +25,7 @@ const clearCanvas = () => {
   ctx.strokeStyle = "black";
   ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
   ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
-}
-
-const canvasdrawSnake = () => {
-    clearCanvas()
-    drawSnake()
-}
+};
 
 const advanceSnake = (dx, dy) => {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
@@ -54,6 +49,11 @@ const downadvanceSnake = () => {
   advanceSnake(0, 10);
 };
 
-rightadvanceSnake();
-upadvanceSnake();
-canvasdrawSnake();
+const gameLoop = () => {
+  clearCanvas();
+  rightadvanceSnake();
+  drawSnake();
+};
+
+setInterval(gameLoop, 100);
+
