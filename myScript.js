@@ -1,6 +1,8 @@
 const c = document.getElementById("gameCanvas");
 const ctx = c.getContext("2d");
 
+let score = 0;
+
 let snake = [
   { x: 150, y: 150 },
   { x: 140, y: 150 },
@@ -36,6 +38,8 @@ const advanceSnake = (dx, dy) => {
   const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
   if (didEatFood) {
     createFood();
+    score += 10;
+    document.getElementById("score").innerHTML = score;
   } else {
     snake.pop();
   }
@@ -78,33 +82,45 @@ const changeDirection = (event) => {
   changingDirection = true;
 };
 
+document.addEventListener("keydown", changeDirection);
+
 const randomTen = (min, max) => {
   return Math.round((Math.random() * (max - min) + min) / 10) * 10;
 };
 
-let food = false;
 let foodX;
 let foodY;
 
-function createFood(food) {
+const createFood = (food) => {
   foodX = randomTen(0, gameCanvas.width - 10);
   foodY = randomTen(0, gameCanvas.height - 10);
   snake.forEach(function isFoodOnSnake(part) {
     const foodIsOnSnake = part.x == foodX && part.y == foodY;
     if (foodIsOnSnake) createFood();
   });
-}
+};
 
-function drawFood() {
+const drawFood = () => {
   ctx.fillStyle = "red";
   ctx.strokestyle = "darkred";
   ctx.fillRect(foodX, foodY, 10, 10);
   ctx.strokeRect(foodX, foodY, 10, 10);
+};
+
+function didGameEnd() {
+  for (let i = 4; i < snake.length; i++) {
+    const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
+    if (didCollide) return true;
+  }
+  const hitLeftWall = snake[0].x < 0;
+  const hitRightWall = snake[0].x > gameCanvas.width - 10;
+  const hitToptWall = snake[0].y < 0;
+  const hitBottomWall = snake[0].y > gameCanvas.height - 10;
+  return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
 }
 
-document.addEventListener("keydown", changeDirection);
-
 const main = () => {
+  if (didGameEnd()) return;
   clearCanvas();
   drawFood();
   advanceSnake(dx, dy);
