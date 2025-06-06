@@ -33,7 +33,12 @@ const clearCanvas = () => {
 const advanceSnake = (dx, dy) => {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
   snake.unshift(head);
-  snake.pop();
+  const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
+  if (didEatFood) {
+    createFood();
+  } else {
+    snake.pop();
+  }
 };
 
 let changingDirection = false;
