@@ -20,4 +20,40 @@ const drawSnake = () => {
   snake.forEach(drawSnakePart);
 };
 
-drawSnake();
+const clearCanvas = () => {
+  ctx.fillStyle = "white";
+  ctx.strokeStyle = "black";
+  ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+  ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
+}
+
+const canvasdrawSnake = () => {
+    clearCanvas()
+    drawSnake()
+}
+
+const advanceSnake = (dx, dy) => {
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+  snake.unshift(head);
+  snake.pop();
+};
+
+const rightadvanceSnake = () => {
+  advanceSnake(10, 0);
+};
+
+const leftadvanceSnake = () => {
+  advanceSnake(-10, 0);
+};
+
+const upadvanceSnake = () => {
+  advanceSnake(0, -10);
+};
+
+const downadvanceSnake = () => {
+  advanceSnake(0, 10);
+};
+
+rightadvanceSnake();
+upadvanceSnake();
+canvasdrawSnake();
