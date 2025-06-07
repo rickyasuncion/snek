@@ -1,6 +1,8 @@
 const c = document.getElementById("gameCanvas");
 const ctx = c.getContext("2d");
 
+const resetbt = document.getElementById('resetButton');
+
 let score = 0;
 
 let snake = [
@@ -39,7 +41,7 @@ const advanceSnake = (dx, dy) => {
   if (didEatFood) {
     createFood();
     score += 10;
-    document.getElementById("score").innerHTML = score;
+    document.getElementById("score").innerHTML = 'Score:' + score;
   } else {
     snake.pop();
   }
@@ -121,6 +123,7 @@ function didGameEnd() {
 
 const reset = () => {
   score = 0;
+  document.getElementById("score").innerHTML = "Score: " + score; // Reset score display
   snake = [
     { x: 150, y: 150 },
     { x: 140, y: 150 },
@@ -128,8 +131,15 @@ const reset = () => {
     { x: 120, y: 150 },
     { x: 110, y: 150 },
   ];
+  dx = 10; // Reset direction
+  dy = 0;
   createFood();
+  clearCanvas();
+  drawFood();
+  drawSnake();
 };
+
+resetbt.addEventListener('click', reset)
 
 const main = () => {
   if (didGameEnd()) return;
